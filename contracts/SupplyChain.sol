@@ -58,7 +58,7 @@ contract SupplyChain {
    to give them functionality. For example, the forSale modifier should require
    that the item with the given sku has the state ForSale. */
   modifier forSale(uint _sku) { require(items[_sku].state == State.ForSale);_;}
-  modifier sold(uint _sku) { require(items[_sku].state == State.Received);_;}
+  modifier sold(uint _sku) { require(items[_sku].state == State.Sold);_;}
   modifier shipped(uint _sku) { require(items[_sku].state == State.Shipped);_;}
   modifier received(uint _sku) { require(items[_sku].state == State.Received);_;}
 
@@ -86,8 +86,9 @@ contract SupplyChain {
   function buyItem(uint sku)
     public payable forSale(sku) paidEnough(sku) checkValue(sku)
   {
-      emit ForSale(sku);
+      emit Sold(sku);
       items[sku].state = State.Sold;
+      items[sku].buyer = msg.sender;
   }
 
   /* Add 2 modifiers to check if the item is sold already, and that the person calling this function
