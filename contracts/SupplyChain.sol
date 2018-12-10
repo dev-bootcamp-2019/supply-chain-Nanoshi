@@ -87,6 +87,7 @@ contract SupplyChain {
     public payable forSale(sku) paidEnough(sku) checkValue(sku)
   {
       emit Sold(sku);
+      items[sku].seller.transfer(items[sku].price);
       items[sku].state = State.Sold;
       items[sku].buyer = msg.sender;
   }
